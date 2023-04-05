@@ -1,39 +1,65 @@
-# vb6_miniblink_demo
-
 #### 介绍
-{**以下是 Gitee 平台说明，您可以替换此简介**
-Gitee 是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN）。专为开发者提供稳定、高效、安全的云端软件开发协作平台
-无论是个人、团队、或是企业，都能够用 Gitee 实现代码托管、项目管理、协作开发。企业项目请看 [https://gitee.com/enterprises](https://gitee.com/enterprises)}
 
-#### 软件架构
-软件架构说明
+MiniBlink是国内著名的浏览器专家龙泉扫地僧开发的chrome内核的浏览器组件。
+
+项目首页：http://www.miniblink.net/index.html
+
+Miniblink压缩后仅几M左右的体积，只需一个dll，通过纯C接口，数行代码即可集成到各种软件，并且完美支持WinXP、NpAPI
+
+但是由于Miniblink的免费版的node.dll文件导出的方式是__cdecl，VB6导入函数目前VB6的实现方式只看到有这个由国人写的Ocx组件：
+
+https://github.com/imxcstar/vb6-miniblink-SBrowser
+
+@imxcstar 确实是一位VB大牛，至少我没想到能用这种方式调用。
+
+我开这个项目的目的，是希望把Miniblink的最后开源的版本，把node.dll 改为__stdcall导出。
+
+扫地僧的代码很友好，修改起来非常简单：
+
+1、wke\wkedefine.h修改#define WKE_CALL_TYPE __cdecl为#define WKE_CALL_TYPE __stdcall
+2、miniblink项目增加一个预定义文件 miniblink.def
+3、wke\wke2.cpp文件，把
+void wkeUtilRelasePrintPdfDatas(const wkePdfDatas* datas)
+{
+    for (int i = 0; i < datas->count; ++i) {
+        free((void *)(datas->datas[i]));
+    }
+
+    free((void *)(datas->sizes));
+    free((void *)(datas->datas));
+    delete datas;
+}
+
+const wkePdfDatas* wkeUtilPrintToPdf(wkeWebView webView, wkeWebFrameHandle frameId, const wkePrintSettings* settings)
+{
+    content::WebPage* webPage = webView->webPage();
+    blink::WebFrame* webFrame = webPage->getWebFrameFromFrameId(wke::CWebView::wkeWebFrameHandleToFrameId(webPage, frameId));
+    return wke::printToPdf(webView, webFrame, settings);
+}
+
+const wkeMemBuf* wkePrintToBitmap(wkeWebView webView, wkeWebFrameHandle frameId, const wkeScreenshotSettings* settings)
+{
+    return wke::printToBitmap(webView, settings);
+}
+这三个函数名后面加个2
+4、依次编译这些项目
+libcurl.lib 
+harfbuzz.lib 
+libxml.lib 
+libjpeg.lib 
+libpng.lib 
+openssl.lib 
+ots.lib 
+skia.lib 
+zlib.lib 
+wolfssl.lib 
+v8_5_7_1.lib 
+v8_5_7.lib 
+node.lib
+
+从而生成支持stdcall的node.dll
 
 
-#### 安装教程
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 使用说明
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
 
 
-#### 特技
 
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)

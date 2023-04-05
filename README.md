@@ -25,6 +25,7 @@ https://github.com/imxcstar/vb6-miniblink-SBrowser
 void wkeUtilRelasePrintPdfDatas(const wkePdfDatas* datas)
 
 {
+
     for (int i = 0; i < datas->count; ++i) {
 	
         free((void *)(datas->datas[i]));

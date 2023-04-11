@@ -16,82 +16,53 @@ https://github.com/imxcstar/vb6-miniblink-SBrowser
 
 扫地僧的代码很友好，修改起来非常简单：
 
-1、wke\wkedefine.h修改#define WKE_CALL_TYPE __cdecl为#define WKE_CALL_TYPE __stdcall
+1、wke\wkedefine.h<br />
+修改#define WKE_CALL_TYPE __cdecl为#define WKE_CALL_TYPE __stdcall
 
 2、miniblink项目增加一个预定义文件 miniblink.def
 
 3、wke\wke2.cpp文件，把
-
+```
 void wkeUtilRelasePrintPdfDatas(const wkePdfDatas* datas)
-
 {
-
-    for (int i = 0; i < datas->count; ++i) {
-	
-        free((void *)(datas->datas[i]));
-		
+    for (int i = 0; i < datas->count; ++i) {	
+        free((void *)(datas->datas[i]));		
     }
-
-    free((void *)(datas->sizes));
-	
-    free((void *)(datas->datas));
-	
-    delete datas;
-	
+    free((void *)(datas->sizes));	
+    free((void *)(datas->datas));	
+    delete datas;	
 }
-
 
 const wkePdfDatas* wkeUtilPrintToPdf(wkeWebView webView, wkeWebFrameHandle frameId, const wkePrintSettings* settings)
-
 {
-
-    content::WebPage* webPage = webView->webPage();
-	
-    blink::WebFrame* webFrame = webPage->getWebFrameFromFrameId(wke::CWebView::wkeWebFrameHandleToFrameId(webPage, frameId));
-	
-    return wke::printToPdf(webView, webFrame, settings);
-	
+    content::WebPage* webPage = webView->webPage();	
+    blink::WebFrame* webFrame = webPage->getWebFrameFromFrameId(wke::CWebView::wkeWebFrameHandleToFrameId(webPage, frameId));	
+    return wke::printToPdf(webView, webFrame, settings);	
 }
-
 
 const wkeMemBuf* wkePrintToBitmap(wkeWebView webView, wkeWebFrameHandle frameId, const wkeScreenshotSettings* settings)
-
 {
-
-    return wke::printToBitmap(webView, settings);
-	
+    return wke::printToBitmap(webView, settings);	
 }
+```
 这三个函数名后面加个2
 
 4、依次编译这些项目
-
+```
 libcurl.lib 
-
 harfbuzz.lib 
-
 libxml.lib 
-
 libjpeg.lib 
-
 libpng.lib 
-
 openssl.lib 
-
 ots.lib 
-
 skia.lib 
-
 zlib.lib 
-
 wolfssl.lib 
-
 v8_5_7_1.lib 
-
 v8_5_7.lib 
-
 node.lib
-
-
+```
 从而生成支持stdcall的node.dll
 
 

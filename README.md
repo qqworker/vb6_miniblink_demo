@@ -12,7 +12,7 @@ https://github.com/imxcstar/vb6-miniblink-SBrowser <br />
 ```
 修改#define WKE_CALL_TYPE __cdecl为#define WKE_CALL_TYPE __stdcall
 ```
-2、miniblink项目增加一个预定义文件 miniblink.def，代码在项目根目录
+2、miniblink项目增加一个预定义文件 miniblink.def，代码在项目根目录<br />
 3、wke\wke2.cpp文件，把
 ```
 void wkeUtilRelasePrintPdfDatas(const wkePdfDatas* datas)

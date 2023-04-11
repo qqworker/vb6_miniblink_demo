@@ -7,6 +7,7 @@ UserControl=WB.ctl
 Module=wkeModule; wkeModule.bas
 IconForm="Form1"
 Startup="Form1"
+ExeName32="TestMiniblinkVB6.exe"
 Command32=""
 Name="TestMiniblinkVB6"
 HelpContextID="0"

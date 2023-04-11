@@ -50,11 +50,11 @@ Public Property Get Title() As String
     End If
 End Property
 
-Public Property Get Url() As String
+Public Property Get url() As String
     If IsInit Then
-        Url = Utf8ToString(wkeGetUrl(webView))
+        url = Utf8ToString(wkeGetUrl(webView))
     Else
-        Url = ""
+        url = ""
     End If
 End Property
 
@@ -81,13 +81,24 @@ Private Sub UserControl_Show()
         wkeOnWindowDestroy webView, AddressOf wkeWindowDestroyCallback
         wkeOnWindowClosing webView, AddressOf wkeWindowClosingCallback
     
+        '设置代理的例子
+        'Dim proxy As wkeProxy
+        'With proxy
+        '    .hostname = ""
+        '    .password = ""
+        '    .port = 8888
+        '    .type = WKE_PROXY_HTTP
+        '    .username = ""
+        'End With
+        
+        'wkeSetViewProxy webView, VarPtr(proxy)
     End If
     ShowWindow True
     LoadURL "https://yasuo.360.cn/"
 End Sub
 
-Sub LoadURL(ByVal Url As String)
-    wkeLoadURL webView, Url
+Sub LoadURL(ByVal url As String)
+    wkeLoadURL webView, url
 End Sub
 
 Private Sub UserControl_Resize()

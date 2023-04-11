@@ -42,6 +42,38 @@ Type wkeNetJobDataBind
     finishCallback As Long
 End Type
 
+'typedef enum _wkeProxyType {
+'    WKE_PROXY_NONE,
+'    WKE_PROXY_HTTP,
+'    WKE_PROXY_SOCKS4,
+'    WKE_PROXY_SOCKS4A,
+'    WKE_PROXY_SOCKS5,
+'    WKE_PROXY_SOCKS5HOSTNAME
+'} wkeProxyType;
+Enum wkeProxyType
+    WKE_PROXY_NONE
+    WKE_PROXY_HTTP
+    WKE_PROXY_SOCKS4
+    WKE_PROXY_SOCKS4A
+    WKE_PROXY_SOCKS5
+    WKE_PROXY_SOCKS5HOSTNAME
+End Enum
+
+'typedef struct _wkeProxy {
+'    wkeProxyType type;
+'    char hostname[100];
+'    unsigned short port;
+'    char username[50];
+'    char password[50];
+'} wkeProxy;
+Type wkeProxy
+    type As wkeProxyType
+    hostname As String
+    port As Long
+    username As String
+    password As String
+End Type
+
 'WKE_EXTERN_C __declspec(dllexport) void WKE_CALL_TYPE wkeInitialize();
 Public Declare Sub wkeInitialize Lib "node.dll" ()
 
@@ -149,4 +181,9 @@ Public Declare Sub CopyMemory2 _
                Alias "RtlMoveMemory" (ByVal Destination As Long, _
                                       ByVal Source As Long, _
                                       ByVal length As Long)
+
+'ITERATOR2(void, wkeSetViewProxy, wkeWebView webView, wkeProxy *proxy, "")
+Public Declare Sub wkeSetViewProxy _
+               Lib "node.dll" (ByVal webView As Long, _
+                               ByVal proxy As Long)
 

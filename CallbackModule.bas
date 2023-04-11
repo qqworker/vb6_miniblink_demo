@@ -6,7 +6,7 @@ Public dataBindCallback As wkeNetJobDataBind
 
 'typedef void(WKE_CALL_TYPE*wkeNetJobDataRecvCallback)(void* ptr, wkeNetJob job, const char* data, int length);
 Sub wkeNetJobDataRecvCallback(ByVal ptr As Long, job As Long, data As Long, length As Long)
-    AppendLog "wkeNetJobDataRecvCallback"
+    'AppendLog "wkeNetJobDataRecvCallback"
     'AppendLog "Job£º" & CStr(job)
 End Sub
 
